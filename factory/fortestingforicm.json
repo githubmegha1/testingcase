@@ -1,0 +1,17 @@
+{
+	"name": "fortestingforicm",
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "true",
+			"factoryStagingLSReferenceName": "linkedService1",
+			"factoryStagingLSType": "LinkedServiceReference",
+			"factoryStagingFolderPath": "abc"
+		}
+	},
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bcba2b2f-7f77-4558-9c0a-dd2dfae7204f",
+		"tenantId": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+	}
+}

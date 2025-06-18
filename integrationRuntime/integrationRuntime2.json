@@ -1,0 +1,12 @@
+{
+	"name": "integrationRuntime2",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourcegroups/ADF/providers/Microsoft.DataFactory/factories/ADFrepromegha/integrationruntimes/integrationRuntime3",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

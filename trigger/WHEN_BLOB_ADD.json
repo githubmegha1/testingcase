@@ -1,0 +1,28 @@
+{
+	"name": "WHEN_BLOB_ADD",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "TEST_WAIT",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"sourceFolder": "@triggerBody().folderPath",
+					"sourceFileName": "@triggerBody().fileName"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/ingest/blobs/Converted/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourceGroups/ADF/providers/Microsoft.Storage/storageAccounts/eventstoragetesting1",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
