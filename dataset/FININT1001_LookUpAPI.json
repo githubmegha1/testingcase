@@ -1,0 +1,27 @@
+{
+	"name": "FININT1001_LookUpAPI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RyderLookUpAPI",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"RelativePath": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FININT1001_Journal_Entries/Common"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@{dataset().RelativePath}?subscription-key=33121a82521540f59a302d86a5a9f537",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

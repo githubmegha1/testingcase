@@ -1,0 +1,31 @@
+{
+	"name": "FININT1001_PeriodMapParameter",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FinBlobConnectionPublic",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "FININT1001_Journal_Entries/Common"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "FIN_INT1001PeriodMapParameter.json",
+				"folderPath": "FININT1001JournalEntries",
+				"container": "fin-adf-configs"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Parameter": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

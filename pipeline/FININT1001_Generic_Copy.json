@@ -1,0 +1,2120 @@
+{
+	"name": "FININT1001_Generic_Copy",
+	"properties": {
+		"activities": [
+			{
+				"name": "If ExecuteCopy",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(pipeline().parameters.SkipCopy)",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "CopyFDMLookUpToBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ""
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/ESF/fdm/v1",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.FdmFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "CopyCostCenterLookUpToBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ""
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/lookup/v1/CostCenter",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.CostCenterFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "CopyJournalSourceMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalsourcetypes/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalSourceFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy PeriodMapping",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Set vCurrentDate",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{concat('/esf/closedays/v1/', variables('vCurrentDate'))}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/closedays/v1/@{variables('vCurrentDate')}",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.PeriodFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy VehicleLookUp",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/lookup/v1/vehicle",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.VehicleFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy ProductLineMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalproductline/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.ProductLineFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy FunctionMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/function/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.FunctionFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy SuspenseAcctMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/SuspenseAccount/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.SuspenseAcctFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy InterCompanyListMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/InterCompanyAllowedList/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.IntercompanyListFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy CurrencyMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/currencycode/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.CurrencyFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalSourceInactiveMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalsourceinactive/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalSourceInactiveFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalSourceOverrideCategory",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalsourcesoverridecategory/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalSourceOverrideCategoryFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy ProductLineAccountRulesFileName",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/productlineaccountrules/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.ProductLineAccountRulesFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "CopyCostCenterHCtoBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:15:00",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/lookup/v1/costcenter",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Read_Write_Json",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.CostCenterHierarchyFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy FunctionAccountRulesFileName",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/functionaccountrules/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.FunctionAccountRulesFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalMiscHeaderLines",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalmischeaderlines/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalMiscHeaderLinesFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalDefaultCostCenter",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journaldefaultcostcenter/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalDefaultCostCenterFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy UnitOfMeasureConversion",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/unitofmeasureconversion/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.UnitOfMeasureConversionFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalSourceConvertUOMExclude",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalsourceconvertuomexclude/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalSourceConvertUOMExcludeFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy ProjectTypeMapping",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/projectaccountingtype/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.ProjectTypeFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy EmployeeLookup",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/employees/v1",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.EmployeeFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalSourceSkipICWorktag",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalsourceskipicworktag/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalSourceSkipICWorktagFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy JournalSourceSkipICLogic",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journalsourceskipiclogic/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalSourceSkipICLogicFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Get PeriodParameter",
+							"description": "Date parameter format must be 'yyyy-MM-dd'",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "JsonSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "JsonReadSettings"
+									}
+								},
+								"dataset": {
+									"referenceName": "FININT1001_PeriodMapParameter",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Copy JournalDefaultInactiveCostCenter",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/journaldefaultinactivecostcenter/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.JournalDefaultInactiveCostCenterFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "FININT1001_Lookup_Validation",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Copy VehicleLookUp",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "FININTCommon_Lookup_Validation",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ContainerBlob": {
+										"value": "@pipeline().parameters.PublicContainerBlob",
+										"type": "Expression"
+									},
+									"FolderBlob": {
+										"value": "@pipeline().parameters.PublicFolderBlob",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@pipeline().parameters.VehicleFileName",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Copy SpendCategoryHCtoBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:15:00",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/lookup/v1/spendcategory",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Read_Write_Json",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.SpendCategoryHierarchyFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy ProductLineHCtoBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:15:00",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/lookup/v1/productline",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Read_Write_Json",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.ProductLineHierarchyFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy RevenueCategoryHCToBlob",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:15:00",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/lookup/v1/revenuecategory",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Read_Write_Json",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.RevenueCategoryHierarchyFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Set vCurrentDate",
+							"description": "Current date format must be 'yyyy-MM-dd'",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get PeriodParameter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "vCurrentDate",
+								"value": {
+									"value": "@if(empty(activity('Get PeriodParameter').output.firstRow.Parameter), \n    if(empty(pipeline().parameters.AccountingDate), \n        formatDateTime(convertTimeZone(utcNow(),'UTC','Eastern Standard Time'), 'yyyy-MM-dd'), \n        pipeline().parameters.AccountingDate),\n    activity('Get PeriodParameter').output.firstRow.Parameter)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Copy PeriodMappingAdjustment",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{concat('/esf/closedays/v1/', formatDateTime(convertTimeZone(utcNow(),'UTC','Eastern Standard Time'), 'yyyy-MM-dd'))}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/closedays/v1/@{formatDateTime(convertTimeZone(utcNow(),'UTC','Eastern Standard Time'), 'yyyy-MM-dd')}",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.PeriodAdjustmentFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy ESPEligibleSources",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.01:00:00",
+								"retry": 3,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "FININT1001_LookUpAPI",
+									"type": "DatasetReference",
+									"parameters": {
+										"RelativePath": {
+											"value": "/esf/mapping/v1/mappings/espeligiblesources/rydertoworkday",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "FININT1001_Journal_Read_WritePublicBlob",
+									"type": "DatasetReference",
+									"parameters": {
+										"PublicContainerBlob": {
+											"value": "@pipeline().parameters.PublicContainerBlob",
+											"type": "Expression"
+										},
+										"PublicFolderBlob": {
+											"value": "@pipeline().parameters.PublicFolderBlob",
+											"type": "Expression"
+										},
+										"PublicFileBlob": {
+											"value": "@pipeline().parameters.ESPEligibleFileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"FdmFileName": {
+				"type": "string"
+			},
+			"CostCenterFileName": {
+				"type": "string"
+			},
+			"JournalSourceFileName": {
+				"type": "string"
+			},
+			"PeriodFileName": {
+				"type": "string"
+			},
+			"VehicleFileName": {
+				"type": "string"
+			},
+			"ProductLineFileName": {
+				"type": "string"
+			},
+			"FunctionFileName": {
+				"type": "string"
+			},
+			"SkipCopy": {
+				"type": "bool"
+			},
+			"PublicContainerBlob": {
+				"type": "string"
+			},
+			"PublicFolderBlob": {
+				"type": "string"
+			},
+			"SuspenseAcctFileName": {
+				"type": "string"
+			},
+			"IntercompanyListFileName": {
+				"type": "string"
+			},
+			"CurrencyFileName": {
+				"type": "string"
+			},
+			"JournalSourceInactiveFileName": {
+				"type": "string"
+			},
+			"JournalSourceOverrideCategoryFileName": {
+				"type": "string"
+			},
+			"ProductLineAccountRulesFileName": {
+				"type": "string"
+			},
+			"CostCenterHierarchyFileName": {
+				"type": "string"
+			},
+			"FunctionAccountRulesFileName": {
+				"type": "string"
+			},
+			"JournalMiscHeaderLinesFileName": {
+				"type": "string"
+			},
+			"JournalDefaultCostCenterFileName": {
+				"type": "string"
+			},
+			"UnitOfMeasureConversionFileName": {
+				"type": "string"
+			},
+			"JournalSourceConvertUOMExcludeFileName": {
+				"type": "string"
+			},
+			"ProjectTypeFileName": {
+				"type": "string"
+			},
+			"EmployeeFileName": {
+				"type": "string"
+			},
+			"JournalSourceSkipICWorktagFileName": {
+				"type": "string"
+			},
+			"JournalSourceSkipICLogicFileName": {
+				"type": "string"
+			},
+			"JournalDefaultInactiveCostCenterFileName": {
+				"type": "string"
+			},
+			"SpendCategoryHierarchyFileName": {
+				"type": "string"
+			},
+			"ProductLineHierarchyFileName": {
+				"type": "string"
+			},
+			"RevenueCategoryHierarchyFileName": {
+				"type": "string"
+			},
+			"AccountingDate": {
+				"type": "string"
+			},
+			"PeriodAdjustmentFileName": {
+				"type": "string"
+			},
+			"ESPEligibleFileName": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"vCurrentDate": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "FININT1001_Journal_Entries/Common"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-06-25T17:53:36Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
