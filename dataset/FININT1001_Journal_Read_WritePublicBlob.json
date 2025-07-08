@@ -1,0 +1,51 @@
+{
+	"name": "FININT1001_Journal_Read_WritePublicBlob",
+	"properties": {
+		"description": "Data set to Read values from blob and write _unnamed_ files into the blob",
+		"linkedServiceName": {
+			"referenceName": "FinBlobConnectionPublic",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"PublicContainerBlob": {
+				"type": "string",
+				"defaultValue": "rhub-fin-adf-inbound"
+			},
+			"PublicFolderBlob": {
+				"type": "string",
+				"defaultValue": "FININT1001JournalEntries/Cardinal/bd8de460-2228-4689-92b0-d5a7d110b0e2"
+			},
+			"PublicFileBlob": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "FININT1001_Journal_Entries/Common"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().PublicFileBlob",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().PublicFolderBlob",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().PublicContainerBlob",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
