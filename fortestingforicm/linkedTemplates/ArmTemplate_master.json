@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ADXTest'"
 		},
+		"Dataverse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse1'"
+		},
 		"PostgreSql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'PostgreSql1'"
@@ -18,6 +22,10 @@
 		"Snowflake1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
+		"Snowflake_lab_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake_lab'"
 		},
 		"linkedService1_connectionString": {
 			"type": "secureString",
@@ -30,6 +38,10 @@
 		"ADXTest_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storagemeghashah1.dfs.core.windows.net/"
+		},
+		"Dataverse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "asas"
 		},
 		"PostgreSql1_properties_typeProperties_server": {
 			"type": "string",
@@ -50,6 +62,22 @@
 		"Snowflake1_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "ewewewe"
+		},
+		"Snowflake_lab_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF_LAB_DATABASE"
+		},
+		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"WHEN_BLOB_ADD_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourceGroups/ADF/providers/Microsoft.Storage/storageAccounts/eventstoragetesting1"
 		},
 		"integrationRuntime2_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -85,8 +113,14 @@
 					"ADXTest_accountKey": {
 						"value": "[parameters('ADXTest_accountKey')]"
 					},
+					"Dataverse1_servicePrincipalCredential": {
+						"value": "[parameters('Dataverse1_servicePrincipalCredential')]"
+					},
 					"Snowflake1_password": {
 						"value": "[parameters('Snowflake1_password')]"
+					},
+					"Snowflake_lab_password": {
+						"value": "[parameters('Snowflake_lab_password')]"
 					},
 					"linkedService2_connectionString": {
 						"value": "[parameters('linkedService2_connectionString')]"
@@ -100,8 +134,14 @@
 					"ADXTest_properties_typeProperties_url": {
 						"value": "[parameters('ADXTest_properties_typeProperties_url')]"
 					},
+					"Dataverse1_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('Dataverse1_properties_typeProperties_servicePrincipalId')]"
+					},
 					"Snowflake1_properties_typeProperties_database": {
 						"value": "[parameters('Snowflake1_properties_typeProperties_database')]"
+					},
+					"Snowflake_lab_properties_typeProperties_database": {
+						"value": "[parameters('Snowflake_lab_properties_typeProperties_database')]"
 					},
 					"integrationRuntime2_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('integrationRuntime2_properties_typeProperties_linkedInfo_resourceId')]"
@@ -114,6 +154,15 @@
 					},
 					"PostgreSql1_properties_typeProperties_username": {
 						"value": "[parameters('PostgreSql1_properties_typeProperties_username')]"
+					},
+					"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
+						"value": "[parameters('WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder')]"
+					},
+					"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFileName": {
+						"value": "[parameters('WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFileName')]"
+					},
+					"WHEN_BLOB_ADD_properties_typeProperties_scope": {
+						"value": "[parameters('WHEN_BLOB_ADD_properties_typeProperties_scope')]"
 					},
 					"RyderLookUpAPI_properties_typeProperties_url": {
 						"value": "[parameters('RyderLookUpAPI_properties_typeProperties_url')]"

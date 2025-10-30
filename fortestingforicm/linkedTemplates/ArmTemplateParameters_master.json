@@ -8,10 +8,16 @@
 		"ADXTest_accountKey": {
 			"value": ""
 		},
+		"Dataverse1_servicePrincipalCredential": {
+			"value": ""
+		},
 		"PostgreSql1_password": {
 			"value": ""
 		},
 		"Snowflake1_password": {
+			"value": ""
+		},
+		"Snowflake_lab_password": {
 			"value": ""
 		},
 		"linkedService1_connectionString": {
@@ -22,6 +28,9 @@
 		},
 		"ADXTest_properties_typeProperties_url": {
 			"value": "https://storagemeghashah1.dfs.core.windows.net/"
+		},
+		"Dataverse1_properties_typeProperties_servicePrincipalId": {
+			"value": "asas"
 		},
 		"PostgreSql1_properties_typeProperties_server": {
 			"value": "localhost"
@@ -37,6 +46,18 @@
 		},
 		"Snowflake1_properties_typeProperties_database": {
 			"value": "ewewewe"
+		},
+		"Snowflake_lab_properties_typeProperties_database": {
+			"value": "ADF_LAB_DATABASE"
+		},
+		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
+			"value": "@triggerBody().folderPath"
+		},
+		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"WHEN_BLOB_ADD_properties_typeProperties_scope": {
+			"value": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourceGroups/ADF/providers/Microsoft.Storage/storageAccounts/eventstoragetesting1"
 		},
 		"integrationRuntime2_properties_typeProperties_linkedInfo_resourceId": {
 			"value": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourcegroups/ADF/providers/Microsoft.DataFactory/factories/ADFrepromegha/integrationruntimes/integrationRuntime3"

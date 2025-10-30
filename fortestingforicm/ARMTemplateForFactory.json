@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ADXTest'"
 		},
+		"Dataverse1_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse1'"
+		},
 		"PostgreSql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'PostgreSql1'"
@@ -18,6 +22,10 @@
 		"Snowflake1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
+		"Snowflake_lab_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake_lab'"
 		},
 		"linkedService1_connectionString": {
 			"type": "secureString",
@@ -30,6 +38,10 @@
 		"ADXTest_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storagemeghashah1.dfs.core.windows.net/"
+		},
+		"Dataverse1_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "asas"
 		},
 		"PostgreSql1_properties_typeProperties_server": {
 			"type": "string",
@@ -50,6 +62,22 @@
 		"Snowflake1_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "ewewewe"
+		},
+		"Snowflake_lab_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ADF_LAB_DATABASE"
+		},
+		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"WHEN_BLOB_ADD_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourceGroups/ADF/providers/Microsoft.Storage/storageAccounts/eventstoragetesting1"
 		},
 		"integrationRuntime2_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -88,7 +116,7 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-03-12T17:56:48Z"
+				"lastPublishTime": "2025-09-09T22:02:34Z"
 			},
 			"dependsOn": []
 		},
@@ -111,9 +139,70 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2025-09-09T22:02:34Z"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Script1",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "Snowflake_lab",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "\nUPDATE TESTTABLE SET DATA = 'sample4 for testing ' WHERE ID =1 or ID =2;\nselect *  from TESTTABLE where ID =1 or ID =2 ;"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_lab')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_lab",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_lab')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ADXTest')]",
@@ -128,6 +217,27 @@
 						"type": "SecureString",
 						"value": "[parameters('ADXTest_accountKey')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dataverse1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CommonDataServiceForApps",
+				"typeProperties": {
+					"deploymentType": "Online",
+					"serviceUri": "asas",
+					"authenticationType": "AADServicePrincipal",
+					"servicePrincipalId": "[parameters('Dataverse1_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('Dataverse1_servicePrincipalCredential')]"
+					},
+					"servicePrincipalCredentialType": "ServicePrincipalKey"
 				}
 			},
 			"dependsOn": []
@@ -203,6 +313,28 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake_lab')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "microsoft_partner.east-us-2.azure",
+					"user": "ADFLABUSER",
+					"database": "[parameters('Snowflake_lab_properties_typeProperties_database')]",
+					"warehouse": "ADF_LAB_WAREHOUSE",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Snowflake_lab_password')]"
+					}
+				},
+				"version": "1.1"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/linkedService1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -236,23 +368,37 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AdfPerformanceProdIntegrationRuntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"name": "[concat(parameters('factoryName'), '/WHEN_BLOB_ADD')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "AutoResolve",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 16,
-							"timeToLive": 240
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "TEST_WAIT",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"sourceFolder": "[parameters('WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder')]",
+							"sourceFileName": "[parameters('WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFileName')]"
 						}
 					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/ingest/blobs/Converted/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('WHEN_BLOB_ADD_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/TEST_WAIT')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
