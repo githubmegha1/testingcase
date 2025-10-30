@@ -1,0 +1,17 @@
+{
+	"name": "Snowflake_lab",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SnowflakeV2",
+		"typeProperties": {
+			"authenticationType": "Basic",
+			"accountIdentifier": "microsoft_partner.east-us-2.azure",
+			"user": "ADFLABUSER",
+			"database": "ADF_LAB_DATABASE",
+			"warehouse": "ADF_LAB_WAREHOUSE",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDQ2RTFFRUIxLTk1NDUtNDg5Ni1BQzBELUY3Q0I2OEI0Q0RDNl80OTUzYjZlNC1mOGIyLTRhYjctYTZhNS0zY2ZlOTUxZWJiOTAiDQp9"
+		},
+		"version": "1.1"
+	}
+}
