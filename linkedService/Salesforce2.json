@@ -3,7 +3,7 @@
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
-		"type": "SalesforceV2",
+		"type": "Salesforce",
 		"typeProperties": {
 			"environmentUrl": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com",
 			"clientId": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU",
