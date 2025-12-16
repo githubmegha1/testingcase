@@ -15,9 +15,25 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse1'"
 		},
+		"GoogleCloudStorage1_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'GoogleCloudStorage1'"
+		},
 		"PostgreSql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'PostgreSql1'"
+		},
+		"Salesforce1_clientSecret": {
+			"type": "secureString",
+			"metadata": "Secure string for 'clientSecret' of 'Salesforce1'"
+		},
+		"Salesforce2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Salesforce2'"
+		},
+		"Salesforce2_securityToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'securityToken' of 'Salesforce2'"
 		},
 		"Snowflake1_password": {
 			"type": "secureString",
@@ -26,6 +42,10 @@
 		"Snowflake_lab_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_lab'"
+		},
+		"Teradata1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Teradata1'"
 		},
 		"linkedService1_connectionString": {
 			"type": "secureString",
@@ -43,6 +63,10 @@
 			"type": "string",
 			"defaultValue": "asas"
 		},
+		"GoogleCloudStorage1_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "sdsd"
+		},
 		"PostgreSql1_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "localhost"
@@ -59,6 +83,26 @@
 			"type": "string",
 			"defaultValue": "https://apistg.ryder.com"
 		},
+		"Salesforce1_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com"
+		},
+		"Salesforce1_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU"
+		},
+		"Salesforce2_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com"
+		},
+		"Salesforce2_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "meghashah601@agentforce.com"
+		},
+		"Salesforce2_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU"
+		},
 		"Snowflake1_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "ewewewe"
@@ -66,6 +110,14 @@
 		"Snowflake_lab_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "ADF_LAB_DATABASE"
+		},
+		"Teradata1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sdsdsd"
+		},
+		"Teradata1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "Admin"
 		},
 		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
 			"type": "string",
@@ -187,22 +239,93 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SnowflakeTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/pipeline4')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Snowflake_lab",
-					"type": "LinkedServiceReference"
+				"activities": [
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pipeline5",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
 				},
-				"annotations": [],
-				"type": "SnowflakeV2Table",
-				"schema": [],
-				"typeProperties": {}
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Snowflake_lab')]"
+				"[concat(variables('factoryId'), '/pipelines/pipeline5')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline5')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pipeline6",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline6')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline6')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait1",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ADXTest')]",
@@ -217,6 +340,26 @@
 						"type": "SecureString",
 						"value": "[parameters('ADXTest_accountKey')]"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3575683467436223.3.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourceGroups/ADF/providers/Microsoft.Databricks/workspaces/azuredatabrickmegha",
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "1",
+					"newClusterVersion": "10.4.x-scala2.12",
+					"clusterOption": "Fixed",
+					"newClusterInitScripts": []
 				}
 			},
 			"dependsOn": []
@@ -238,6 +381,24 @@
 						"value": "[parameters('Dataverse1_servicePrincipalCredential')]"
 					},
 					"servicePrincipalCredentialType": "ServicePrincipalKey"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GoogleCloudStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "GoogleCloudStorage",
+				"typeProperties": {
+					"serviceUrl": "https://storage.googleapis.com",
+					"accessKeyId": "[parameters('GoogleCloudStorage1_properties_typeProperties_accessKeyId')]",
+					"secretAccessKey": {
+						"type": "SecureString",
+						"value": "[parameters('GoogleCloudStorage1_secretAccessKey')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -292,6 +453,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Salesforce1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SalesforceV2",
+				"typeProperties": {
+					"environmentUrl": "[parameters('Salesforce1_properties_typeProperties_environmentUrl')]",
+					"clientId": "[parameters('Salesforce1_properties_typeProperties_clientId')]",
+					"clientSecret": {
+						"type": "SecureString",
+						"value": "[parameters('Salesforce1_clientSecret')]"
+					},
+					"apiVersion": "54.0",
+					"authenticationType": "OAuth2ClientCredential"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Salesforce2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Salesforce",
+				"typeProperties": {
+					"environmentUrl": "[parameters('Salesforce2_properties_typeProperties_environmentUrl')]",
+					"username": "[parameters('Salesforce2_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Salesforce2_password')]"
+					},
+					"securityToken": {
+						"type": "SecureString",
+						"value": "[parameters('Salesforce2_securityToken')]"
+					},
+					"apiVersion": "54.0",
+					"clientId": "[parameters('Salesforce2_properties_typeProperties_clientId')]",
+					"authenticationType": "OAuth2ClientCredential"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Snowflake1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -331,6 +537,27 @@
 					}
 				},
 				"version": "1.1"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Teradata1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Teradata",
+				"version": "2.0",
+				"typeProperties": {
+					"server": "[parameters('Teradata1_properties_typeProperties_server')]",
+					"authenticationType": "Basic",
+					"username": "[parameters('Teradata1_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Teradata1_password')]"
+					},
+					"sslMode": "Prefer"
+				}
 			},
 			"dependsOn": []
 		},
@@ -490,8 +717,25 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime5')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/default')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
 			"apiVersion": "2018-06-01",
 			"properties": {},
 			"dependsOn": []

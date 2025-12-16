@@ -15,9 +15,25 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalCredential' of 'Dataverse1'"
 		},
+		"GoogleCloudStorage1_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'GoogleCloudStorage1'"
+		},
 		"PostgreSql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'PostgreSql1'"
+		},
+		"Salesforce1_clientSecret": {
+			"type": "secureString",
+			"metadata": "Secure string for 'clientSecret' of 'Salesforce1'"
+		},
+		"Salesforce2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Salesforce2'"
+		},
+		"Salesforce2_securityToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'securityToken' of 'Salesforce2'"
 		},
 		"Snowflake1_password": {
 			"type": "secureString",
@@ -26,6 +42,10 @@
 		"Snowflake_lab_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Snowflake_lab'"
+		},
+		"Teradata1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Teradata1'"
 		},
 		"linkedService1_connectionString": {
 			"type": "secureString",
@@ -43,6 +63,10 @@
 			"type": "string",
 			"defaultValue": "asas"
 		},
+		"GoogleCloudStorage1_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "sdsd"
+		},
 		"PostgreSql1_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "localhost"
@@ -59,6 +83,26 @@
 			"type": "string",
 			"defaultValue": "https://apistg.ryder.com"
 		},
+		"Salesforce1_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com"
+		},
+		"Salesforce1_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU"
+		},
+		"Salesforce2_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com"
+		},
+		"Salesforce2_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "meghashah601@agentforce.com"
+		},
+		"Salesforce2_properties_typeProperties_clientId": {
+			"type": "string",
+			"defaultValue": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU"
+		},
 		"Snowflake1_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "ewewewe"
@@ -66,6 +110,14 @@
 		"Snowflake_lab_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "ADF_LAB_DATABASE"
+		},
+		"Teradata1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sdsdsd"
+		},
+		"Teradata1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "Admin"
 		},
 		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
 			"type": "string",
@@ -116,20 +168,29 @@
 					"Dataverse1_servicePrincipalCredential": {
 						"value": "[parameters('Dataverse1_servicePrincipalCredential')]"
 					},
+					"GoogleCloudStorage1_secretAccessKey": {
+						"value": "[parameters('GoogleCloudStorage1_secretAccessKey')]"
+					},
+					"Salesforce1_clientSecret": {
+						"value": "[parameters('Salesforce1_clientSecret')]"
+					},
+					"Salesforce2_password": {
+						"value": "[parameters('Salesforce2_password')]"
+					},
+					"Salesforce2_securityToken": {
+						"value": "[parameters('Salesforce2_securityToken')]"
+					},
 					"Snowflake1_password": {
 						"value": "[parameters('Snowflake1_password')]"
 					},
 					"Snowflake_lab_password": {
 						"value": "[parameters('Snowflake_lab_password')]"
 					},
+					"Teradata1_password": {
+						"value": "[parameters('Teradata1_password')]"
+					},
 					"linkedService2_connectionString": {
 						"value": "[parameters('linkedService2_connectionString')]"
-					},
-					"PostgreSql1_password": {
-						"value": "[parameters('PostgreSql1_password')]"
-					},
-					"linkedService1_connectionString": {
-						"value": "[parameters('linkedService1_connectionString')]"
 					},
 					"ADXTest_properties_typeProperties_url": {
 						"value": "[parameters('ADXTest_properties_typeProperties_url')]"
@@ -137,14 +198,62 @@
 					"Dataverse1_properties_typeProperties_servicePrincipalId": {
 						"value": "[parameters('Dataverse1_properties_typeProperties_servicePrincipalId')]"
 					},
+					"GoogleCloudStorage1_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('GoogleCloudStorage1_properties_typeProperties_accessKeyId')]"
+					},
+					"Salesforce1_properties_typeProperties_environmentUrl": {
+						"value": "[parameters('Salesforce1_properties_typeProperties_environmentUrl')]"
+					},
+					"Salesforce1_properties_typeProperties_clientId": {
+						"value": "[parameters('Salesforce1_properties_typeProperties_clientId')]"
+					},
+					"Salesforce2_properties_typeProperties_environmentUrl": {
+						"value": "[parameters('Salesforce2_properties_typeProperties_environmentUrl')]"
+					},
+					"Salesforce2_properties_typeProperties_username": {
+						"value": "[parameters('Salesforce2_properties_typeProperties_username')]"
+					},
+					"Salesforce2_properties_typeProperties_clientId": {
+						"value": "[parameters('Salesforce2_properties_typeProperties_clientId')]"
+					},
 					"Snowflake1_properties_typeProperties_database": {
 						"value": "[parameters('Snowflake1_properties_typeProperties_database')]"
 					},
 					"Snowflake_lab_properties_typeProperties_database": {
 						"value": "[parameters('Snowflake_lab_properties_typeProperties_database')]"
 					},
+					"Teradata1_properties_typeProperties_server": {
+						"value": "[parameters('Teradata1_properties_typeProperties_server')]"
+					},
+					"Teradata1_properties_typeProperties_username": {
+						"value": "[parameters('Teradata1_properties_typeProperties_username')]"
+					},
 					"integrationRuntime2_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('integrationRuntime2_properties_typeProperties_linkedInfo_resourceId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "fortestingforicm_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"PostgreSql1_password": {
+						"value": "[parameters('PostgreSql1_password')]"
+					},
+					"linkedService1_connectionString": {
+						"value": "[parameters('linkedService1_connectionString')]"
 					},
 					"PostgreSql1_properties_typeProperties_server": {
 						"value": "[parameters('PostgreSql1_properties_typeProperties_server')]"
@@ -169,7 +278,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'fortestingforicm_ArmTemplate_0')]"
+			]
 		}
 	]
 }

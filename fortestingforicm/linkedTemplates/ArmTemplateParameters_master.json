@@ -11,13 +11,28 @@
 		"Dataverse1_servicePrincipalCredential": {
 			"value": ""
 		},
+		"GoogleCloudStorage1_secretAccessKey": {
+			"value": ""
+		},
 		"PostgreSql1_password": {
+			"value": ""
+		},
+		"Salesforce1_clientSecret": {
+			"value": ""
+		},
+		"Salesforce2_password": {
+			"value": ""
+		},
+		"Salesforce2_securityToken": {
 			"value": ""
 		},
 		"Snowflake1_password": {
 			"value": ""
 		},
 		"Snowflake_lab_password": {
+			"value": ""
+		},
+		"Teradata1_password": {
 			"value": ""
 		},
 		"linkedService1_connectionString": {
@@ -32,6 +47,9 @@
 		"Dataverse1_properties_typeProperties_servicePrincipalId": {
 			"value": "asas"
 		},
+		"GoogleCloudStorage1_properties_typeProperties_accessKeyId": {
+			"value": "sdsd"
+		},
 		"PostgreSql1_properties_typeProperties_server": {
 			"value": "localhost"
 		},
@@ -44,11 +62,32 @@
 		"RyderLookUpAPI_properties_typeProperties_url": {
 			"value": "https://apistg.ryder.com"
 		},
+		"Salesforce1_properties_typeProperties_environmentUrl": {
+			"value": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com"
+		},
+		"Salesforce1_properties_typeProperties_clientId": {
+			"value": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU"
+		},
+		"Salesforce2_properties_typeProperties_environmentUrl": {
+			"value": "https://orgfarm-15f945ac79-dev-ed.develop.my.salesforce.com"
+		},
+		"Salesforce2_properties_typeProperties_username": {
+			"value": "meghashah601@agentforce.com"
+		},
+		"Salesforce2_properties_typeProperties_clientId": {
+			"value": "3MVG9GCMQoQ6rpzRuy0cN9LMbsiCs7Ic9TShMjTVLMiEdczu0sLRnGO8ok8ZuG06vvE3yNoJwYnBw40daMaAU"
+		},
 		"Snowflake1_properties_typeProperties_database": {
 			"value": "ewewewe"
 		},
 		"Snowflake_lab_properties_typeProperties_database": {
 			"value": "ADF_LAB_DATABASE"
+		},
+		"Teradata1_properties_typeProperties_server": {
+			"value": "sdsdsd"
+		},
+		"Teradata1_properties_typeProperties_username": {
+			"value": "Admin"
 		},
 		"WHEN_BLOB_ADD_properties_TEST_WAIT_parameters_sourceFolder": {
 			"value": "@triggerBody().folderPath"
