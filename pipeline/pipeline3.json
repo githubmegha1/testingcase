@@ -1,23 +1,7 @@
 {
-	"name": "pipeline4",
+	"name": "pipeline3",
 	"properties": {
 		"activities": [
-			{
-				"name": "Execute Pipeline1",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pipeline5",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
 			{
 				"name": "Copy data1",
 				"type": "Copy",
