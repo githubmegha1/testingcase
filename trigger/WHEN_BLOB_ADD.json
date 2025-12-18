@@ -2,7 +2,7 @@
 	"name": "WHEN_BLOB_ADD",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
