@@ -1,0 +1,15 @@
+{
+	"name": "CosmosDbNoSql1",
+	"properties": {
+		"annotations": [],
+		"type": "CosmosDb",
+		"typeProperties": {
+			"accountEndpoint": "https://cosmosdb12345megha.documents.azure.com:443/",
+			"database": "abc"
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
