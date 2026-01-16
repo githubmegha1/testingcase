@@ -1,7 +1,0 @@
-{
-	"name": "CosmosDb71",
-	"properties": {
-		"privateLinkResourceId": "/subscriptions/2eec9f1f-2504-4772-a723-cdb649d51509/resourceGroups/ADF/providers/Microsoft.DocumentDb/databaseAccounts/cosmosdb12345megha",
-		"groupId": "Sql"
-	}
-}
