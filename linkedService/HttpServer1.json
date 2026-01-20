@@ -1,0 +1,13 @@
+{
+	"name": "HttpServer1",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://microsoft.sharepoint.com/teams/meghatest",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
+}
